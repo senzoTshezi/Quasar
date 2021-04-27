@@ -76,11 +76,29 @@ const actions = {
 // Get data from the state and that data can be used by components 
 //But in this part you can also manipulate that data, bufe used by components 
 const getters ={
+   // SEARCH GETTER 
+    tasksFiltered:(state) => {
+      let tasksFiltered = {}
+      if(state.search){
+        //Populate empty object
+        Object.keys(state.tasks).forEach(function(key){
+          let task = state.tasks[key]
+          if(task.name.toLowerCase().includes(state.search.toLowerCase())){
+            tasksFiltered[key] = task
+          }
+
+        })
+        return tasksFiltered
+      }
+      return state.tasks
+    },
+
     // Get only todo Task
-    tasksTodo : (state) => {
+    tasksTodo : (state, getters) => {
+      let tasksFiltered = getters.tasksFiltered
       let tasks ={}
-      Object.keys(state.tasks).forEach(function(key){
-        let task = state.tasks[key];
+      Object.keys(tasksFiltered).forEach(function(key){
+        let task = tasksFiltered[key];
          if(!task.completed){
            tasks[key] = task
          }
@@ -88,10 +106,11 @@ const getters ={
         return tasks
     },
     // Get Only completed Tasks 
-    tasksCompleted : (state) => {
+    tasksCompleted : (state,getters) => {
+      let tasksFiltered = getters.tasksFiltered
       let tasks ={}
-      Object.keys(state.tasks).forEach(function(key){
-        let task = state.tasks[key];
+      Object.keys(tasksFiltered).forEach(function(key){
+        let task = tasksFiltered[key];
          if(task.completed){
            tasks[key] = task
          }

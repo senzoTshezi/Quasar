@@ -4,12 +4,13 @@
     <div class="row q-mb-lg">
       <search></search>
     </div>
-
+    <!-- SEARCH  -->
+    <p v-if="search && !Object.keys(tasksTodo).length && !Object.keys(tasksCompleted).length"> No search results.</p>
     <!-- NO TASK TO DO  -->
-    <no-tasks v-if="!Object.keys(tasksTodo).length"></no-tasks>
+    <no-tasks v-if="!Object.keys(tasksTodo).length && !search"></no-tasks>
 
     <!-- TODO TASKS  -->
-    <tasks-todo :tasksTodo="tasksTodo" v-else />
+    <tasks-todo :tasksTodo="tasksTodo" v-if="Object.keys(tasksTodo).length" />
 
     <!-- COMPLETED TASKS  -->
     <tasks-completed
@@ -36,11 +37,7 @@
 </template>
 
 <script>
-import Task from "src/components/Tasks/Task.vue";
-import { mapGetters } from "vuex";
-import AddTask from "src/components/Tasks/Modals/AddTask.vue";
-import NoTasks from "components/Tasks/NoTasks.vue";
-import Search from "components/Tasks/Tools/Search.vue";
+import { mapGetters, mapState } from "vuex";
 export default {
   data() {
     return {
@@ -52,6 +49,7 @@ export default {
     // we can also use a more clean way that is MapGetter
     // First we need to specify the module that we are getting from ('tasks') then we list all of the getters that we want to get ['tasks']
     ...mapGetters("tasks", ["tasksTodo", "tasksCompleted"]),
+    ...mapState('tasks',['search'])
   },
   mounted() {
     this.$root.$on("showAddTask", () => {
