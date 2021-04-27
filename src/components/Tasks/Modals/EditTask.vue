@@ -1,7 +1,7 @@
 <template>
     <q-card>
         <!-- Header Title and Close button -->
-       <modal-header>Add Task</modal-header> 
+       <modal-header>Edit Task</modal-header> 
 
         <!-- FORM  -->
         <q-form @submit="submitForm">
@@ -38,21 +38,16 @@
 <script>
 import { mapActions } from 'vuex'
 export default {
+    props:['task','id'],
     data() {
         return{
             taskToSubmit : {
-                name : '',
-                targetNumber: null,
-                currentQuantity: null,
-                dueDate: '',
-                dueTime: '',
-                completed : false
             }
         }
     },
     methods: {
         // this action is now maped to this component 
-        ...mapActions('tasks',['addTask']),
+        ...mapActions('tasks',['updateTask']),
         submitForm(){
             // console.log("SUBMIT")
             this.$refs.modalTaskName.$refs.name.validate();
@@ -63,10 +58,13 @@ export default {
             }
         },
         submitTask() {
-
-            this.addTask(this.taskToSubmit)
-
-            this.$emit('close')
+            this.updateTask({
+                id : this.id,
+                updates: this.taskToSubmit
+                
+            })
+            this.$emit('close');
+            console.log('Senzo Tshezi ');
         }
     },
     components:{
@@ -77,6 +75,9 @@ export default {
         'modal-target-number':require('components/Tasks/Modals/Shared/ModalTargetNumber.vue').default,
         'modal-current-quantity':require('components/Tasks/Modals/Shared/ModalCurrentQuantity.vue').default,
         'modal-buttons':require('components/Tasks/Modals/Shared/ModalButtons.vue').default
+    },
+    mounted(){
+        this.taskToSubmit = Object.assign({},this.task)
     }
 }
 </script>

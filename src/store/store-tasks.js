@@ -6,47 +6,27 @@ import {uid} from 'quasar'
 const state = {
 
       tasks :{
-        // 'ID1': {
-        //         id : 1,
-        //         name : "Buy Calves",
-        //         target: 50,
-        //         current: 20,
-        //         dueDate: '2021/12/01',
-        //         dueTime: "12:00",
-        //         completed : false
-        //       },
-        // 'ID2': {
-        //         id : 1,
-        //         name : "Buy Calves",
-        //         target: 50,
-        //         current: 20,
-        //         dueDate: '2021/12/01',
-        //         dueTime: "12:00",
-        //         completed : false
-        //   },
-      }
+        'ID1': {
+                id : 1,
+                name : " Calves",
+                targetNumber: 50,
+                currentQuantity: 20,
+                dueDate: '2021/12/01',
+                dueTime: "12:00",
+                completed : false
+              },
+        'ID2': {
+                id : 1,
+                name : "Pigs ",
+                targetNumber: 100,
+                currentQuantity: 10,
+                dueDate: '2021/12/01',
+                dueTime: "12:00",
+                completed : false
+          },
+      },
+      search : ''
 
-    // In the real world we will be using Firebase and Firebase is using Objects , not arrays 
-    // tasks : [
-    //     {
-    //       id : 1,
-    //       name : "Buy Calves",
-    //       target: 50,
-    //       current: 20,
-    //       dueDate: '2021/12/01',
-    //       dueTime: "12:00",
-    //       completed : false
-    //     },
-    //     {
-    //       id : 2,
-    //       name : "Buy Pigs",
-    //       target: 100,
-    //       current: 0,
-    //       dueDate: '2021/12/01',
-    //       dueTime: "12:00",
-    //       completed : false
-    //     }
-    //   ]
 }
 
 // This is where we will create our Methods that manipulate the state 
@@ -62,6 +42,9 @@ const mutations = {
 
   addTask(state, payload){
     Vue.set(state.tasks, payload.id, payload.task)
+  },
+  setSearch(state, value){
+    state.search =value
   }
 }
 
@@ -84,16 +67,37 @@ const actions = {
       task : task
     }
     commit('addTask', payload)
+  },
+  setSearch({commit}, value){
+    commit('setSearch', value)
   }
 }
 
 // Get data from the state and that data can be used by components 
 //But in this part you can also manipulate that data, bufe used by components 
 const getters ={
-    // arrow function that get data fro the state 
-    tasks : (state) => {
-        return state.tasks
-    }
+    // Get only todo Task
+    tasksTodo : (state) => {
+      let tasks ={}
+      Object.keys(state.tasks).forEach(function(key){
+        let task = state.tasks[key];
+         if(!task.completed){
+           tasks[key] = task
+         }
+      })
+        return tasks
+    },
+    // Get Only completed Tasks 
+    tasksCompleted : (state) => {
+      let tasks ={}
+      Object.keys(state.tasks).forEach(function(key){
+        let task = state.tasks[key];
+         if(task.completed){
+           tasks[key] = task
+         }
+      })
+        return tasks
+    },
 
 }
 
