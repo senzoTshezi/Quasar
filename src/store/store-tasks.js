@@ -20,12 +20,22 @@ const state = {
                 name : "Pigs ",
                 targetNumber: 100,
                 currentQuantity: 10,
-                dueDate: '2021/12/01',
+                dueDate: '2021/12/02',
                 dueTime: "12:00",
                 completed : false
           },
+          'ID3': {
+            id : 1,
+            name : "Goats ",
+            targetNumber: 22,
+            currentQuantity: 77,
+            dueDate: '2021/12/03',
+            dueTime: "12:00",
+            completed : false
       },
-      search : ''
+      },
+      search : '',
+      sort:'name'
 
 }
 
@@ -45,7 +55,11 @@ const mutations = {
   },
   setSearch(state, value){
     state.search =value
-  }
+  },
+  setSort(state, value){
+    state.sort =value
+  },
+  
 }
 
 //This one can be asyncronus, that can go tu server update then commit to mutation then adds that data to the state 
@@ -70,19 +84,42 @@ const actions = {
   },
   setSearch({commit}, value){
     commit('setSearch', value)
+  },
+  setSort({commit}, value){
+    commit('setSort', value)
   }
 }
 
 // Get data from the state and that data can be used by components 
 //But in this part you can also manipulate that data, bufe used by components 
 const getters ={
+  //SORT 
+  tasksSorted: (state)=>{
+    let tasksSorted = {},
+        keysOrdered = Object.keys(state.tasks);
+
+        // A and B are first and second key
+        keysOrdered.sort((a,b) => {
+          let taskAProp = state.tasks[a][state.sort].toLowerCase(),
+              taskBProp = state.tasks[b][state.sort].toLowerCase();
+
+            if(taskAProp > taskBProp) return 1
+            else if (taskAProp < taskBProp) return -1
+            else return 0
+        })
+        keysOrdered.forEach((key) => {
+          tasksSorted[key] = state.tasks[key]
+        })
+        return tasksSorted
+  },
    // SEARCH GETTER 
-    tasksFiltered:(state) => {
-      let tasksFiltered = {}
+    tasksFiltered:(state, getters) => {
+      let tasksSorted = getters.tasksSorted,
+       tasksFiltered = {}
       if(state.search){
         //Populate empty object
-        Object.keys(state.tasks).forEach(function(key){
-          let task = state.tasks[key]
+        Object.keys(tasksSorted).forEach(function(key){
+          let task = tasksSorted[key]
           if(task.name.toLowerCase().includes(state.search.toLowerCase())){
             tasksFiltered[key] = task
           }
@@ -90,7 +127,7 @@ const getters ={
         })
         return tasksFiltered
       }
-      return state.tasks
+      return tasksSorted
     },
 
     // Get only todo Task
