@@ -36,8 +36,10 @@
 </template>
 
 <script>
+import mixinAddEditTask from 'src/mixins/mixin-add-edit-task'
 import { mapActions } from 'vuex'
 export default {
+    mixins: [mixinAddEditTask],
     data() {
         return{
             taskToSubmit : {
@@ -48,36 +50,16 @@ export default {
                 dueTime: '',
                 completed : false
             }
-        }
+        } 
     },
     methods: {
         // this action is now maped to this component 
         ...mapActions('tasks',['addTask']),
-        submitForm(){
-            // console.log("SUBMIT")
-            this.$refs.modalTaskName.$refs.name.validate();
-            // this.$refs.modalTargetNumber.$refs.targetNumber.validate()
-            // this.$refs.modalCurrentQuantity.$refs.currentQuantity.validate()
-            if(!this.$refs.modalTaskName.$refs.name.hasError  ){
-                this.submitTask();
-            }
-        },
         submitTask() {
-
             this.addTask(this.taskToSubmit)
-
             this.$emit('close')
         }
     },
-    components:{
-        'modal-header':require('components/Tasks/Modals/Shared/ModalHeader.vue').default,
-        'modal-task-name':require('components/Tasks/Modals/Shared/ModalTaskName.vue').default,
-        'modal-due-date':require('components/Tasks/Modals/Shared/ModalDueDate.vue').default,
-        'modal-due-time':require('components/Tasks/Modals/Shared/ModalDueTime.vue').default,
-        'modal-target-number':require('components/Tasks/Modals/Shared/ModalTargetNumber.vue').default,
-        'modal-current-quantity':require('components/Tasks/Modals/Shared/ModalCurrentQuantity.vue').default,
-        'modal-buttons':require('components/Tasks/Modals/Shared/ModalButtons.vue').default
-    }
 }
 </script>
 

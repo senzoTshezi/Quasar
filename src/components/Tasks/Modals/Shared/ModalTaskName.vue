@@ -1,7 +1,7 @@
 <template>
   <div class="row q-mb-sm">
       <!-- <q-input clearable autofocus outlined v-model="taskToSubmit.name" label="Task Name" class="col" :rules="[val => !!val || 'Field is required']" ref="name"/>   -->
-          <q-input 
+          <q-input  
              clearable
              outlined 
              :value="name"
@@ -9,14 +9,20 @@
              label="Task Name" 
              class="col" 
              :rules="[val => !!val || 'Field is required']" 
-             autofocus ref="name"
+             v-select-all
+             autofocus 
+             ref="name"
              /> 
   </div>
 </template>
 
 <script>
+import {selectAll} from 'src/directives/directive-select-all'
 export default {
-    props:['name']
+    props:['name'],
+    directives:{
+      selectAll
+    }
 }
 </script>
 

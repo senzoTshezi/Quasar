@@ -1,39 +1,46 @@
 <template>
-  <q-page class="q-pa-md">
-    <!-- SEARCH TASK  -->
-    <div class="row q-mb-lg">
-      <search></search>
-      <sort/>
+  <q-page>
+    <div class="q-pa-md absolute full-width full-height column">
+        <!-- SEARCH TASK  -->
+        <div class="row q-mb-lg">
+          <search></search>
+          <sort/>
+        </div>
+        <!-- SEARCH  -->
+        <p v-if="search && !Object.keys(tasksTodo).length && !Object.keys(tasksCompleted).length"> No search results.</p>
+        
+        <!-- DIV THAT WRAP UP NOTASK, TASKS AND COMPLETED  -->
+        <q-scroll-area class="q-scroll-area-tasks">
+            <!-- NO TASK TO DO  -->
+            <no-tasks v-if="!Object.keys(tasksTodo).length && !search"></no-tasks>
+
+            <!-- TODO TASKS  -->
+            <tasks-todo :tasksTodo="tasksTodo" v-if="Object.keys(tasksTodo).length" />
+
+            <!-- COMPLETED TASKS  -->
+            <tasks-completed
+              :tasksCompleted="tasksCompleted"
+              v-if="Object.keys(tasksCompleted).length"
+            />
+        </q-scroll-area >  
+
+        <!-- ADD BUTTON  -->
+        <!-- no-pointer-event class will make the component to be clickable even though they are bedind this Div  -->
+        <div class="absolute-button text-center q-mb-lg no-pointer-event">
+          <q-btn
+            round
+            color="primary"
+            size="24px"
+            icon="add"
+            @click="showAddTask = true"
+          />
+        </div>
     </div>
-    <!-- SEARCH  -->
-    <p v-if="search && !Object.keys(tasksTodo).length && !Object.keys(tasksCompleted).length"> No search results.</p>
-    <!-- NO TASK TO DO  -->
-    <no-tasks v-if="!Object.keys(tasksTodo).length && !search"></no-tasks>
-
-    <!-- TODO TASKS  -->
-    <tasks-todo :tasksTodo="tasksTodo" v-if="Object.keys(tasksTodo).length" />
-
-    <!-- COMPLETED TASKS  -->
-    <tasks-completed
-      :tasksCompleted="tasksCompleted"
-      v-if="Object.keys(tasksCompleted).length"
-    />
-
-    <!-- ADD BUTTON  -->
-    <div class="absolute-button text-center q-mb-lg">
-      <q-btn
-        round
-        color="primary"
-        size="24px"
-        icon="add"
-        @click="showAddTask = true"
-      />
-    </div>
-
     <!-- ADD FORM  -->
     <q-dialog v-model="showAddTask">
       <add-task @close="showAddTask = false" />
     </q-dialog>
+    
   </q-page>
 </template>
 
@@ -70,4 +77,9 @@ export default {
 };
 </script>
 
-<style lang="stylus" scoped></style>
+<style lang="stylus" scoped>
+  .q-scroll-area-tasks{
+    display: flex;
+    flex-grow:1
+  }
+</style>

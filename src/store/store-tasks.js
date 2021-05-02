@@ -32,7 +32,79 @@ const state = {
             dueDate: '2021/12/03',
             dueTime: "12:00",
             completed : false
-      },
+          },
+          'ID4': {
+            id : 1,
+            name : "Goats ",
+            targetNumber: 22,
+            currentQuantity: 77,
+            dueDate: '2021/12/03',
+            dueTime: "12:00",
+            completed : false
+          },
+          'ID5': {
+            id : 1,
+            name : "Goats ",
+            targetNumber: 22,
+            currentQuantity: 77,
+            dueDate: '2021/12/03',
+            dueTime: "12:00",
+            completed : false
+          },
+          'ID6': {
+            id : 1,
+            name : "Goats ",
+            targetNumber: 22,
+            currentQuantity: 77,
+            dueDate: '2021/12/03',
+            dueTime: "12:00",
+            completed : false
+          },
+          'ID7': {
+            id : 1,
+            name : "Goats ",
+            targetNumber: 22,
+            currentQuantity: 77,
+            dueDate: '2021/12/03',
+            dueTime: "12:00",
+            completed : false
+          },
+          'ID8': {
+            id : 1,
+            name : "Goats ",
+            targetNumber: 22,
+            currentQuantity: 77,
+            dueDate: '2021/12/03',
+            dueTime: "12:00",
+            completed : false
+          },
+          'ID9': {
+            id : 1,
+            name : "Goats ",
+            targetNumber: 22,
+            currentQuantity: 77,
+            dueDate: '2021/12/03',
+            dueTime: "12:00",
+            completed : false
+          },
+          'ID10': {
+            id : 1,
+            name : "Goats ",
+            targetNumber: 22,
+            currentQuantity: 77,
+            dueDate: '2021/12/03',
+            dueTime: "12:00",
+            completed : false
+          },
+          'ID11': {
+            id : 1,
+            name : "Goats ",
+            targetNumber: 22,
+            currentQuantity: 77,
+            dueDate: '2021/12/03',
+            dueTime: "12:00",
+            completed : false
+          },
       },
       search : '',
       sort:'name'

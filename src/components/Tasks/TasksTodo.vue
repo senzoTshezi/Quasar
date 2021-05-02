@@ -1,17 +1,19 @@
 <template>
-  <div>
-     <list-header bgColor="bg-orange-4">Task Todo </list-header>
-    <q-list  bordered separator>
-      <task
-        v-ripple
-        v-for="(task, key) in tasksTodo"
-        :key="key"
-        :task="task"
-        :id="key"
-      ></task>
-      <!-- (task, key) key is the object name  -->
-    </q-list>
-  </div>
+  <transition appear enter-active-class="animated zoomIn" leave-active-class="animated zoomOut absolute-top">
+    <div>
+      <list-header bgColor="bg-orange-4">Task Todo </list-header>
+      <q-list  bordered separator>
+        <task
+          v-ripple
+          v-for="(task, key) in tasksTodo"
+          :key="key"
+          :task="task"
+          :id="key"
+        ></task>
+        <!-- (task, key) key is the object name  -->
+      </q-list>
+    </div>
+  </transition>
 </template>
 
 <script>

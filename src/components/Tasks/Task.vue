@@ -1,13 +1,13 @@
 <template>
             <!-- (task, key) key is the object name  -->
     <!-- <q-item @click="updateTask({id:id , updates: {completed : ! task.completed}})" tag="label" v-ripple  clickable :class="!task.completed ? 'bg-orange-1' : 'bg-green-1'" > -->
-        <q-item @click="updateTask({ id: id, updates: { completed: !task.completed } })"  tag="label" v-ripple  clickable :class="!task.completed ? 'bg-orange-1' : 'bg-green-1'" >
+        <q-item @click="updateTask({ id: id, updates: { completed: !task.completed } })" v-touch-hold:1000.mouse="showEditTaskModal"  tag="label" v-ripple  clickable :class="!task.completed ? 'bg-orange-1' : 'bg-green-1'" >
         <q-item-section side top>
             <q-checkbox :value="task.completed" class="no-pointer-events" />
         </q-item-section>
 
         <q-item-section>
-            <q-item-label :class="{'text-strike' : task.completed}">{{task.name}} </q-item-label>
+            <q-item-label :class="{'text-strike' : task.completed}" v-html="$options.filters.searchHighlight(task.name, search)"> </q-item-label>
         </q-item-section>
 
         <q-item-section>
@@ -22,7 +22,7 @@
             <div class="row">
             <q-icon name="event"/>
                 <div class="column">
-                <q-item-label caption>{{task.dueDate}}</q-item-label>
+                <q-item-label caption>{{ task.dueDate | niceDate}}</q-item-label>
                 <small> <q-item-label caption>{{task.dueTime}}</q-item-label></small> 
                 </div>
             </div>
@@ -31,7 +31,7 @@
         <!-- Now we want to mark Tasks as completed  -->
         <q-item-section side >
             <div class="row">
-                <q-btn flat round color="primary" dense icon="edit" @click.stop="showEditTask=true"/>
+                <q-btn flat round color="primary" dense icon="edit" @click.stop="showEditTaskModal"/>
                 <q-btn flat round color="red" dense icon="delete" @click.stop="promptToDelete(id)"/>
            </div>
         </q-item-section>
@@ -45,7 +45,9 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex'
+import { date } from 'quasar'
+// const {formatDate } = date;
+import { mapState, mapActions } from 'vuex'
 import AddTask from './Modals/AddTask.vue'
 
 export default {
@@ -59,10 +61,17 @@ export default {
             showEditTask : false
         }
     },
+    //COMPUTED PROPERTY
+    computed:{
+        ...mapState('tasks',['search'])
+    },
 
     // METHOD PROPERTY 
     methods: {
         ...mapActions('tasks', ['updateTask', 'deleteTask']),
+        showEditTaskModal(){
+            this.showEditTask = true;
+        },
         promptToDelete(id){
             this.$q.dialog({
                 title: 'Confirm',
@@ -72,6 +81,21 @@ export default {
             }).onOk(() => {
                 this.deleteTask(id);
             })
+        }
+    },
+    //FILTER 
+    filters:{
+        niceDate(value){
+            return date.formatDate(value ,  'MMM D YYYY')
+        },
+        searchHighlight(value, search){
+            if(search){
+                let searchRegExp = new RegExp(search, 'ig')
+                return value.replace(searchRegExp ,(match) =>{
+                    return '<span class="bg-yellow-6">' + search + '</span>'
+                })
+            }
+            return value;  
         }
     },
 
