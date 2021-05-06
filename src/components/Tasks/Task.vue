@@ -23,7 +23,7 @@
             <q-icon name="event"/>
                 <div class="column">
                 <q-item-label caption>{{ task.dueDate | niceDate}}</q-item-label>
-                <small> <q-item-label caption>{{task.dueTime}}</q-item-label></small> 
+                <small> <q-item-label caption>{{taskDueTime}}</q-item-label></small> 
                 </div>
             </div>
         </q-item-section>
@@ -47,7 +47,7 @@
 <script>
 import { date } from 'quasar'
 // const {formatDate } = date;
-import { mapState, mapActions } from 'vuex'
+import { mapState, mapActions, mapGetters } from 'vuex'
 import AddTask from './Modals/AddTask.vue'
 
 export default {
@@ -63,7 +63,15 @@ export default {
     },
     //COMPUTED PROPERTY
     computed:{
-        ...mapState('tasks',['search'])
+        ...mapState('tasks',['search']),
+        ...mapGetters('settings', ['settings']),
+        taskDueTime() {
+            if(this.settings.show12HourTimeFormat){
+                // return this.task.dueTime + '💪'
+                return date.formatDate(this.task.dueDate + " " + this.task.dueTime ,  'h:mmA')
+            }
+            return this.task.dueTime
+        }
     },
 
     // METHOD PROPERTY 

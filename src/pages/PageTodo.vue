@@ -12,7 +12,7 @@
         <!-- DIV THAT WRAP UP NOTASK, TASKS AND COMPLETED  -->
         <q-scroll-area class="q-scroll-area-tasks">
             <!-- NO TASK TO DO  -->
-            <no-tasks v-if="!Object.keys(tasksTodo).length && !search"></no-tasks>
+            <no-tasks v-if="!Object.keys(tasksTodo).length && !search && !settings.showTasksInOneList"></no-tasks>
 
             <!-- TODO TASKS  -->
             <tasks-todo :tasksTodo="tasksTodo" v-if="Object.keys(tasksTodo).length" />
@@ -57,6 +57,7 @@ export default {
     // we can also use a more clean way that is MapGetter
     // First we need to specify the module that we are getting from ('tasks') then we list all of the getters that we want to get ['tasks']
     ...mapGetters("tasks", ["tasksTodo", "tasksCompleted"]),
+    ...mapGetters("settings", ["settings"]),
     ...mapState('tasks',['search'])
   },
   mounted() {
