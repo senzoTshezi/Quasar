@@ -14,8 +14,11 @@
         /> -->
 
         <q-toolbar-title class="absolute-center">
-          Awesome Todo
+         FORTEM FARM 
         </q-toolbar-title>
+
+        <!-- LOGIN LINK  -->
+        <q-btn to="/auth" flat icon-right="account_circle" label="Login" class="absolute-right"/>
 
         <!-- <div>Quasar v{{ $q.version }}</div> -->
       </q-toolbar>
