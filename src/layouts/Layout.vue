@@ -17,8 +17,11 @@
          FORTEM FARM 
         </q-toolbar-title>
 
-        <!-- LOGIN LINK  -->
-        <q-btn to="/auth" flat icon-right="account_circle" label="Login" class="absolute-right"/>
+        <!-- LOGIN BUTTON  -->
+        <q-btn v-if="!loggedIn" to="/auth" flat icon-right="account_circle" label="Login" class="absolute-right"/>
+
+        <!-- LOGOUT BUTTON  -->
+        <q-btn @click="logoutUser" v-else  flat icon-right="account_circle" label="Logout" class="absolute-right"/>
 
         <!-- <div>Quasar v{{ $q.version }}</div> -->
       </q-toolbar>
@@ -106,6 +109,7 @@
 </template>
 
 <script>
+import {mapState,mapActions} from 'vuex'
 export default {
   name: 'MainLayout',
   data () {
@@ -126,6 +130,12 @@ export default {
         }
       ]
     }
+  },
+  computed:{
+    ...mapState('auth', ['loggedIn'])
+  },
+  methods: {
+    ...mapActions('auth',['logoutUser'])
   }
 }
 </script>

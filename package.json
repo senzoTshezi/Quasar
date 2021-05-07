@@ -12,6 +12,7 @@
     "@quasar/extras": "^1.0.0",
     "@vue/cli-plugin-unit-jest": "~4.5.0",
     "core-js": "^3.6.5",
+    "firebase": "^8.5.0",
     "quasar": "^1.0.0"
   },
   "devDependencies": {
