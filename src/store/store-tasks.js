@@ -67,22 +67,22 @@ const mutations = {
 //This one can be asyncronus, that can go tu server update then commit to mutation then adds that data to the state 
 const actions = {
   // Acttions always expect objects and data that you are sending from the component 
-  updateTask({commit}, payload) {
+  updateTask({dispatch}, payload) {
     // console.log("PAYLOAD : ", payload)
-    commit('updateTask', payload)
+    dispatch('fbUpdateTask', payload)
   },
 
-  deleteTask({commit},id){
-    commit('deleteTask',id)
+  deleteTask({dispatch},id){
+    dispatch('fbDeleteTask',id)
   },
-  addTask({commit }, task){
+  addTask({dispatch }, task){
     // We are generating a new Uid and include that Uid to task 
     let taskId = uid();
     let payload = {
       id : taskId,
       task : task
     }
-    commit('addTask', payload)
+    dispatch('fbAddTask', payload)
   },
   setSearch({commit}, value){
     commit('setSearch', value)
@@ -121,6 +121,21 @@ const actions = {
       commit('deleteTask', taskId)
     })
 
+  },
+  fbAddTask({}, payload){
+    let userId = firebaseAuth.currentUser.uid
+    let taskRef = firebaseDb.ref('tasks/' + userId + '/' + payload.id)
+    taskRef.set(payload.task)
+  },
+  fbUpdateTask({}, payload){
+    let userId = firebaseAuth.currentUser.uid
+    let taskRef = firebaseDb.ref('tasks/' + userId + '/' + payload.id)
+    taskRef.update(payload.updates)
+  },
+  fbDeleteTask({}, taskId){
+    let userId = firebaseAuth.currentUser.uid
+    let taskRef = firebaseDb.ref('tasks/' + userId + '/' + taskId)
+    taskRef.remove()
   }
 
 }
