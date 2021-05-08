@@ -5,8 +5,7 @@
   "description": "A Quasar Framework app",
   "author": "Senzo Tshezi <stshezi8@gmail.com>",
   "scripts": {
-    "test:unit": "vue-cli-service test:unit",
-    "test": "echo \"No test specified\" && exit 0"
+    "icons": "icongenie generate -i src/icon/AppIcon.png --skip-trim"
   },
   "dependencies": {
     "@quasar/extras": "^1.0.0",

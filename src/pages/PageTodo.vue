@@ -1,6 +1,6 @@
 <template>
   <q-page>
-    <div class="q-pa-md absolute full-width full-height column">
+    <div class="q-pa-md col-sm-3 col-sm-9 absolute full-width full-height column">
       <template v-if="tasksDownloaded">
         <!-- SEARCH TASK  -->
         <div class="row q-mb-lg">
@@ -19,7 +19,7 @@
         </p>
 
         <!-- DIV THAT WRAP UP NOTASK, TASKS AND COMPLETED  -->
-        <q-scroll-area class="q-scroll-area-tasks">
+        <q-scroll-area class="q-scroll-area-tasks col-sm-3 col-sm-9">
           <!-- NO TASK TO DO  -->
           <no-tasks
             v-if="
