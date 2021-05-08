@@ -3,18 +3,18 @@
     <!-- <q-item @click="updateTask({id:id , updates: {completed : ! task.completed}})" tag="label" v-ripple  clickable :class="!task.completed ? 'bg-orange-1' : 'bg-green-1'" > -->
         <q-item @click="updateTask({ id: id, updates: { completed: !task.completed } })" v-touch-hold:1000.mouse="showEditTaskModal"  tag="label" v-ripple  clickable :class="!task.completed ? 'bg-orange-1' : 'bg-green-1'" >
         <q-item-section side top>
-            <q-checkbox :value="task.completed" class="no-pointer-events" />
+            <q-checkbox :value="task.completed" class="no-pointer-events hidden" />
         </q-item-section>
 
-        <q-item-section>
+        <q-item-section style="padding-right: 70px;">
             <q-item-label :class="{'text-strike' : task.completed}" v-html="$options.filters.searchHighlight(task.name, search)"> </q-item-label>
         </q-item-section>
 
-        <q-item-section>
+        <q-item-section style="padding-right: 70px;">
             <q-item-label>Target Number : {{task.targetNumber}} </q-item-label>
         </q-item-section>
 
-        <q-item-section>
+        <q-item-section style="padding-right: 70px;">
             <q-item-label>Current Quantity : {{task.currentQuantity}}</q-item-label>
         </q-item-section>
 
