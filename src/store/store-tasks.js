@@ -1,38 +1,40 @@
 import Vue from 'vue'
 import {uid} from 'quasar'
+//Now the firebaseDB API is now available in this store module
+import { firebaseDB , firebaseAuth, firebaseDb} from 'boot/firebase'
 // Here we have a list of objects that does different things 
 
 // This is where we will store our Data 
 const state = {
 
       tasks :{
-        'ID1': {
-                id : 1,
-                name : " Calves",
-                targetNumber: 50,
-                currentQuantity: 20,
-                dueDate: '2021/12/01',
-                dueTime: "12:00",
-                completed : false
-              },
-        'ID2': {
-                id : 1,
-                name : "Pigs ",
-                targetNumber: 100,
-                currentQuantity: 10,
-                dueDate: '2021/12/02',
-                dueTime: "12:00",
-                completed : false
-          },
-          'ID3': {
-            id : 1,
-            name : "Goats ",
-            targetNumber: 22,
-            currentQuantity: 77,
-            dueDate: '2021/12/03',
-            dueTime: "12:00",
-            completed : false
-          }
+        // 'ID1': {
+        //         id : 1,
+        //         name : " Calves",
+        //         targetNumber: 50,
+        //         currentQuantity: 20,
+        //         dueDate: '2021/12/01',
+        //         dueTime: "12:00",
+        //         completed : false
+        //       },
+        // 'ID2': {
+        //         id : 1,
+        //         name : "Pigs ",
+        //         targetNumber: 100,
+        //         currentQuantity: 10,
+        //         dueDate: '2021/12/02',
+        //         dueTime: "12:00",
+        //         completed : false
+        //   },
+        //   'ID3': {
+        //     id : 1,
+        //     name : "Goats ",
+        //     targetNumber: 22,
+        //     currentQuantity: 77,
+        //     dueDate: '2021/12/03',
+        //     dueTime: "12:00",
+        //     completed : false
+        //   }
       },
       search : '',
       sort:'name'
@@ -87,7 +89,40 @@ const actions = {
   },
   setSort({commit}, value){
     commit('setSort', value)
+  },
+  //FIREBASE READ DATA
+  fbReadData({ commit }){
+    let userId = firebaseAuth.currentUser.uid
+    let userTasks = firebaseDb.ref('tasks/'+ userId)
+
+    //Child added When there is a new Task Added on DB it shows on web sametime
+    userTasks.on('child_added', snapshot =>{
+      let task = snapshot.val()
+      let payload = {
+        id: snapshot.key,
+        task: task
+      }
+      commit('addTask', payload)
+    })
+
+    //Child Changed when updating something on DB must also update the View 
+    userTasks.on('child_changed', snapshot =>{
+      let task = snapshot.val()
+      let payload = {
+        id: snapshot.key,
+        updates: task
+      }
+      commit('updateTask', payload)
+    })
+
+    //Child Remove
+    userTasks.on('child_removed', snapshot =>{
+      let taskId = snapshot.key
+      commit('deleteTask', taskId)
+    })
+
   }
+
 }
 
 // Get data from the state and that data can be used by components 

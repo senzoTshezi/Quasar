@@ -1,6 +1,8 @@
 import  firebase from "firebase/app";
+// Here we are connecting to Auth API(Firebase)
 import "firebase/auth";
-
+//Now we have to connect to our Database
+import "firebase/database"
 // Your web app's Firebase configuration
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
 var firebaseConfig = {
@@ -16,5 +18,6 @@ var firebaseConfig = {
 // Initialize Firebase
 let firebaseApp = firebase.initializeApp(firebaseConfig);
 let firebaseAuth = firebase.auth();
+let firebaseDb = firebaseApp.database()
 
-export {firebaseAuth}
+export {firebaseAuth, firebaseDb}
