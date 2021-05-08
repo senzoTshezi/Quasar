@@ -1,28 +1,46 @@
 <template>
   <q-page>
     <div class="q-pa-md absolute full-width full-height column">
+      <template v-if="tasksDownloaded">
         <!-- SEARCH TASK  -->
         <div class="row q-mb-lg">
           <search></search>
-          <sort/>
+          <sort />
         </div>
         <!-- SEARCH  -->
-        <p v-if="search && !Object.keys(tasksTodo).length && !Object.keys(tasksCompleted).length"> No search results.</p>
-        
+        <p
+          v-if="
+            search &&
+            !Object.keys(tasksTodo).length &&
+            !Object.keys(tasksCompleted).length
+          "
+        >
+          No search results.
+        </p>
+
         <!-- DIV THAT WRAP UP NOTASK, TASKS AND COMPLETED  -->
         <q-scroll-area class="q-scroll-area-tasks">
-            <!-- NO TASK TO DO  -->
-            <no-tasks v-if="!Object.keys(tasksTodo).length && !search && !settings.showTasksInOneList"></no-tasks>
+          <!-- NO TASK TO DO  -->
+          <no-tasks
+            v-if="
+              !Object.keys(tasksTodo).length &&
+              !search &&
+              !settings.showTasksInOneList
+            "
+          ></no-tasks>
 
-            <!-- TODO TASKS  -->
-            <tasks-todo :tasksTodo="tasksTodo" v-if="Object.keys(tasksTodo).length" />
+          <!-- TODO TASKS  -->
+          <tasks-todo
+            :tasksTodo="tasksTodo"
+            v-if="Object.keys(tasksTodo).length"
+          />
 
-            <!-- COMPLETED TASKS  -->
-            <tasks-completed
-              :tasksCompleted="tasksCompleted"
-              v-if="Object.keys(tasksCompleted).length"
-            />
-        </q-scroll-area >  
+          <!-- COMPLETED TASKS  -->
+          <tasks-completed
+            :tasksCompleted="tasksCompleted"
+            v-if="Object.keys(tasksCompleted).length"
+          />
+        </q-scroll-area>
 
         <!-- ADD BUTTON  -->
         <!-- no-pointer-event class will make the component to be clickable even though they are bedind this Div  -->
@@ -35,12 +53,17 @@
             @click="showAddTask = true"
           />
         </div>
+      </template>
+      <template v-else>
+        <span class="absolute-center">
+          <q-spinner color="primary" size="3em"/>
+        </span>
+      </template>
     </div>
     <!-- ADD FORM  -->
     <q-dialog v-model="showAddTask">
       <add-task @close="showAddTask = false" />
     </q-dialog>
-    
   </q-page>
 </template>
 
@@ -58,7 +81,7 @@ export default {
     // First we need to specify the module that we are getting from ('tasks') then we list all of the getters that we want to get ['tasks']
     ...mapGetters("tasks", ["tasksTodo", "tasksCompleted"]),
     ...mapGetters("settings", ["settings"]),
-    ...mapState('tasks',['search'])
+    ...mapState("tasks", ["search", "tasksDownloaded"]),
   },
   mounted() {
     this.$root.$on("showAddTask", () => {
@@ -70,17 +93,15 @@ export default {
     "tasks-todo": require("components/Tasks/TasksTodo.vue").default,
     "tasks-completed": require("components/Tasks/TasksCompleted.vue").default,
     "no-tasks": require("components/Tasks/NoTasks.vue").default,
-    "search": require("components/Tasks/Tools/Search.vue").default,
-    "sort": require("components/Tasks/Tools/Sort.vue").default
-
-
+    search: require("components/Tasks/Tools/Search.vue").default,
+    sort: require("components/Tasks/Tools/Sort.vue").default,
   },
 };
 </script>
 
 <style lang="stylus" scoped>
-  .q-scroll-area-tasks{
-    display: flex;
-    flex-grow:1
-  }
+.q-scroll-area-tasks {
+  display: flex;
+  flex-grow: 1;
+}
 </style>
