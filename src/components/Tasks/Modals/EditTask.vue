@@ -27,7 +27,7 @@
             </q-card-section>
 
             <!-- BUTTON SUBMIT  -->
-            <modal-buttons/>
+            <modal-buttons v-close-popup/>
 
 
         </q-form>
@@ -57,7 +57,7 @@ export default {
                 
             })
             this.$emit('close');
-            console.log('Senzo Tshezi ');
+
         }
     },
 

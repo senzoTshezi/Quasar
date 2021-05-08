@@ -17,6 +17,6 @@ export default{
         'modal-due-time':require('components/Tasks/Modals/Shared/ModalDueTime.vue').default,
         'modal-target-number':require('components/Tasks/Modals/Shared/ModalTargetNumber.vue').default,
         'modal-current-quantity':require('components/Tasks/Modals/Shared/ModalCurrentQuantity.vue').default,
-        'modal-buttons':require('components/Tasks/Modals/Shared/ModalButtons.vue').default
+        'modal-buttons': require('components/Tasks/Modals/Shared/ModalButtons.vue').default
     }
 }
