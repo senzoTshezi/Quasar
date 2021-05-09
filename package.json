@@ -17,6 +17,11 @@
   "devDependencies": {
     "@quasar/app": "^2.0.0",
     "@vue/test-utils": "^1.0.3",
+    "devtron": "^1.4.0",
+    "electron": "^9.0.0",
+    "electron-debug": "^3.0.1",
+    "electron-devtools-installer": "^3.0.0",
+    "electron-packager": "^14.1.1",
     "flush-promises": "^1.0.2"
   },
   "browserslist": [
@@ -35,5 +40,5 @@
     "npm": ">= 6.13.4",
     "yarn": ">= 1.21.1"
   },
-  "productName": "Quasar App"
+  "productName": "FORTEM FARM"
 }

@@ -1,8 +1,7 @@
 <template>
   <q-layout view="hHh lpR fFf">
-
     <!-- HEADER  -->
-    <q-header elevated >
+    <q-header elevated>
       <q-toolbar>
         <!-- <q-btn
           flat
@@ -13,28 +12,39 @@
           @click="leftDrawerOpen = !leftDrawerOpen"
         /> -->
 
-        <q-toolbar-title class="absolute-center">
-         FORTEM FARM 
-        </q-toolbar-title>
+        <q-toolbar-title class="absolute-center"> FORTEM FARM </q-toolbar-title>
 
         <!-- LOGIN BUTTON  -->
-        <q-btn v-if="!loggedIn" to="/auth" flat icon-right="account_circle" label="Login" class="absolute-right"/>
+        <q-btn
+          v-if="!loggedIn"
+          to="/auth"
+          flat
+          icon-right="account_circle"
+          label="Login"
+          class="absolute-right"
+        />
 
         <!-- LOGOUT BUTTON  -->
-        <q-btn @click="logoutUser" v-else  flat icon-right="account_circle" label="Logout" class="absolute-right"/>
+        <q-btn
+          @click="logoutUser"
+          v-else
+          flat
+          icon-right="account_circle"
+          label="Logout"
+          class="absolute-right"
+        />
 
         <!-- <div>Quasar v{{ $q.version }}</div> -->
       </q-toolbar>
     </q-header>
     <!-- END HEADER  -->
 
-
-
     <!-- FOOTER  -->
-    <q-footer >
+    <q-footer>
       <q-tabs>
         <q-route-tab
-        v-for="nav in navs" :key="nav.id"
+          v-for="nav in navs"
+          :key="nav.id"
           :icon="nav.icon"
           :label="nav.label"
           :to="nav.to"
@@ -50,9 +60,6 @@
     </q-footer>
     <!--END  FOOTER  -->
 
-
-
-
     <!-- NAVIGATION BAR  -->
     <q-drawer
       v-model="leftDrawerOpen"
@@ -64,27 +71,42 @@
         <!-- Header  -->
         <q-item-label header class="text-grey-8"> Navigation </q-item-label>
 
-          <!-- Todo Link  exact is for the active page link -->
-          <!-- v-for="nav in navs" :key="nav.id" Now we are looping through that diplaying the object of our Navigation bar  -->
-          <!-- :breakpoint="767" Once the screen size width is 767 we hide the Main Navigation bar  -->
-          <q-item 
-          v-for="nav in navs" :key="nav.id"
+        <!-- Todo Link  exact is for the active page link -->
+        <!-- v-for="nav in navs" :key="nav.id" Now we are looping through that diplaying the object of our Navigation bar  -->
+        <!-- :breakpoint="767" Once the screen size width is 767 we hide the Main Navigation bar  -->
+        <q-item
+          v-for="nav in navs"
+          :key="nav.id"
           :breakpoint="767"
           :width="250"
           class="text-grey-4"
-          clickable exact :to="nav.to" >
-            <q-item-section avatar >
-              <q-icon :name="nav.icon" />
-            </q-item-section>
+          clickable
+          exact
+          :to="nav.to"
+        >
+          <q-item-section avatar>
+            <q-icon :name="nav.icon" />
+          </q-item-section>
 
-            <q-item-section>
-              <q-item-label> {{nav.label}}</q-item-label>
+          <q-item-section>
+            <q-item-label> {{ nav.label }}</q-item-label>
+          </q-item-section>
+        </q-item>
 
-            </q-item-section>
-          </q-item>
-
+        <q-item 
+        v-if="$q.platform.is.electron"
+        @click="quitApp"
+        class="text-grey-4 absolute-bottom"
+         clickable>
+          <q-item-section avatar>
+            <q-icon name="power_settings_new" />
+          </q-item-section>
+          <q-item-section>
+            <q-item-label> Quit</q-item-label>
+          </q-item-section>
+        </q-item>
         <!-- Setting Link exact is for the active page link -->
-          <!-- <q-item clickable exact to="/settings" >
+        <!-- <q-item clickable exact to="/settings" >
             <q-item-section avatar >
               <q-icon name="settings" />
             </q-item-section>
@@ -93,65 +115,74 @@
               <q-item-label> Settings</q-item-label>
             </q-item-section>
           </q-item> -->
-
       </q-list>
     </q-drawer>
     <!--END  NAVIGATION BAR  -->
-
 
     <!-- WHOLE PAGE IS HERE  -->
     <q-page-container>
       <router-view />
     </q-page-container>
     <!-- END WHOLE PAGE IS HERE  -->
-
   </q-layout>
 </template>
 
 <script>
-import {mapState,mapActions} from 'vuex'
+import { mapState, mapActions } from "vuex";
 export default {
-  name: 'MainLayout',
-  data () {
+  name: "MainLayout",
+  data() {
     return {
       leftDrawerOpen: false,
       navs: [
-        { 
+        {
           id: 0,
-          label : 'Todo', // Label of the navigation
-          icon : 'list', // Icon class of the navigation
-          to : '/'// Path 
+          label: "Todo", // Label of the navigation
+          icon: "list", // Icon class of the navigation
+          to: "/", // Path
         },
         {
           id: 1,
-          label : 'Settings',
-          icon : 'settings', 
-          to : '/settings'
-        }
-      ]
-    }
+          label: "Settings",
+          icon: "settings",
+          to: "/settings",
+        },
+      ],
+    };
   },
-  computed:{
-    ...mapState('auth', ['loggedIn'])
+  computed: {
+    ...mapState("auth", ["loggedIn"]),
   },
   methods: {
-    ...mapActions('auth',['logoutUser'])
-  }
-}
+    ...mapActions("auth", ["logoutUser"]),
+      quitApp(){
+      this.$q.dialog({
+        title:"Quit Fortem",
+        message:"Quit Fortem Farm App?",
+        cancel:true,
+        persistent:true
+      }).onOk(()=>{
+        if(this.$q.platform.is.electron){
+          require('electron').ipcRenderer.send('quit-app')
+        }
+      })
+    }
+  },
+};
 </script>
 
 <style lang="scss">
 /*  when screen size is 768 hide footer  */
-@media screen and (min-width:767px) {
-  .q-footer{
+@media screen and (min-width: 767px) {
+  .q-footer {
     display: none;
   }
-  .q-drawer .q-item.q-router-link--active{
-    color: white  !important;
+  .q-drawer .q-item.q-router-link--active {
+    color: white !important;
   }
 
   .q-item__label .text-grey-8 .q-item__label--header {
-    color: white !important; 
+    color: white !important;
   }
 }
 </style>

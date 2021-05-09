@@ -99,9 +99,19 @@ export default {
 };
 </script>
 
-<style lang="stylus" scoped>
+<style lang="scss" scoped>
 .q-scroll-area-tasks {
   display: flex;
   flex-grow: 1;
+}
+.q-scroll-area-tasks{
+  display:flex;
+  flex-grow: 1;
+  .scroll{
+    height: auto !important;
+  }
+}
+element.style {
+    background-color: white !important;
 }
 </style>
