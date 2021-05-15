@@ -5,13 +5,14 @@
         <template v-slot:avatar>
           <q-icon name="account_circle" color="primary" />
         </template>
-        {{tab | titleCase}} to access your things to do
+        Please {{tab | titleCase}} on our app
       </q-banner>
     </div>
 
     <!-- EMAIL TETBOX -->
     <div class="row q-mb-md">
       <q-input
+      type="email"
         :rules="[
           (val) =>
             isValidEmailAddress(val) || 'Please enter a valid email address.',
